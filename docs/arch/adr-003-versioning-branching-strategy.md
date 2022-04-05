@@ -44,11 +44,11 @@ The following are requirements that must be met for releasing dbt:
 
 ### Branching Strategy
 Based off of the release version and expectations, the version type's branching strategy can be determined. 
- * Alpha and Beta are experimental and therefore exist on `main` where all our changes reside. 
- * Alpha is never released but instead signifies that development is happening but the changes during that period have never been released in any form.
- * RC is moving to a stable state. Therefore, a release branch will be created for RC releases to start limiting the changes happening for that release.
- * Final is a stable, tested version. Only verified changes will go into this release which is inherited from the RC so a release branch is also required.
- * A release branch will exist for each unique major, minor version release and be named accordingly: `<major>.<minor>.latest` (ex `1.0.latest`)
+ * Alpha and Beta versions are experimental, and therefore exist only on the `main` branch, where all our changes reside
+ * Alpha versions are never released. They signify that development is underway, though the changes they contain have not been released in any form
+ * An RC version denotes a more stable state. A release branch will be created for RC releases to limit the changes a release contains
+ * Final versions are stable and tested. Only verified changes will go into these releases, which are inherited from the corresponding RC version
+ * A release branch will exist for each unique major or minor version, to be named accordingly: `<major>.<minor>.latest` (e.g. `1.0.latest`)
 
  ![Branching Strategy](images/ReleasingBranchStrategy.png)
 
