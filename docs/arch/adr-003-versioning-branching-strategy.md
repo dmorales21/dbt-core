@@ -50,7 +50,7 @@ Based off of the release version and expectations, the version type's branching 
  * Final is a stable, tested version. Only verified changes will go into this release which is inherited from the RC so a release branch is also required.
  * A release branch will exist for each unique major, minor version release and be named accordingly: `<major>.<minor>.latest` (ex `1.0.latest`)
 
- ![Branching Strategy][images/ReleasingBranchStrategy.png]
+ ![Branching Strategy](images/ReleasingBranchStrategy.png)
 
 ## Status
 In Progress
