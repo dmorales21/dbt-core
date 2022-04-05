@@ -30,7 +30,7 @@ The following are requirements that must be met for releasing dbt:
 
 - Type: the type of the version (e.g. beta, final)
 - Released?: does this type of version need to be released?
-- Branches: the branches where these version types are present (i.e. we will only find beta version numbers on the `main` branch)
+- Branches: the branches where these version types are present (e.g. beta version numbers should only exist on the `main` branch)
 - Release Versions: the releases where the version type is applicable (i.e. we will only have alphas for major and minor releases, we will not have alphas for patch releases)
 - Expectations: the stability of the code changes in the release
 </details>
