@@ -56,9 +56,9 @@ Based off of the release version and expectations, the version type's branching 
 In Progress
 
 ## Consequences
-This doesn't drastically change our current versioning and branching strategy but instead documents what we have been doing.
+This doesn't drastically change our current versioning or branching strategies, but documents our existing flows.
 
-The only major change is we are now incorporating an Alpha version which we previously didn't use at all. The consequences of moving to use an Alpha are to make developing across multiple repos easier. We want `dbt-core` and adapters depend on minor versions. If we don't have a way to keep the `main` branches in sync with one another, then integration tests will start failing. It is also confusing when the `main` branch shows it's an RC or Final version when we do not release the version from there. This gives more clarity as to what versions live where.
+The only real change here is the addition of an Alpha release, the intent of which is to make developing across multiple repos easier. `dbt-core` and adapters should depend on minor versions. If we don't have a way to keep the `main` branches in sync with one another, integration tests will start to fail. It is also confusing when the `main` branch is marked as an RC or Final version when we never release from `main`. This change provides visibility around which versions live where.
 
 ## Outside Scope
 The following are topics that are outside the scope of this document and will be addressed in their own ADR:
