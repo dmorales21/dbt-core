@@ -5,7 +5,7 @@ With `dbt` ever evolving and progressing, we continue to ship and release versio
 
 We already have an established versioning strategy when it comes to major/minor/patch releases. The following is our approach as to what to expect from each release version:
 
-* Major: This signifies that breaking changes to users that they must react to are included in this release.
+* Major: This signifies that breaking changes which require user action are included in this release.
 * Minor version: This signifies that new features are included in this release.
 * Patch version: This signifies that bug and security fixes are included in this release.
 
