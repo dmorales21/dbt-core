@@ -19,7 +19,7 @@ The following are requirements that must be met for releasing dbt:
 1. We must have major, minor, and patch releases.
 1. We must have release types that have the goal of garnering early feedback from the Community.
 1. We must have release types that aim to identify bugs and test for stability.
-1. We must have release types that are stable and production quality.
+1. We must have release types that are stable and of production quality.
 1. We must have the ability to isolate changes from different versions based on the type of release.
 
 ## Decisions
