@@ -62,5 +62,5 @@ The only major change is we are now incorporating an Alpha version which we prev
 
 ## Outside Scope
 The following are topics that are outside the scope of this document and will be addressed in their own ADR:
-* Hotfixes and how branching works for them
+* Hotfixes and their branching strategies
 * How and why we bump release versions right before a release.
