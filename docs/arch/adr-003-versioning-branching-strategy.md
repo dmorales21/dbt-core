@@ -9,7 +9,7 @@ We already have an established versioning strategy when it comes to major/minor/
 * Minor version: This signifies that new features are included in this release.
 * Patch version: This signifies that bug and security fixes are included in this release.
 
-We need a versioning strategy that allows us to to convey to users the confidence and stability of code they are installing. We want a versioning strategy that allows users to try out new changes and experiment with them to get early feedback. We want to make sure users can also get a preview of new features we are working on so that they can incorporate those changes as soon as possible to their own work. 
+We need a versioning strategy that allows us to to convey to users the confidence and stability of code they are installing. We want a versioning strategy that allows users to try out new changes, and experiment with them to get early feedback. We want to make sure users can also get a preview of new features we are working on, so they can incorporate these changes into their work as soon as possible. 
 
 We need a branching strategy to support the goals of the versioning strategy. We do not want to have to stop development to `main` as we await a release. We also don't want to have everything in `main` to go into every release. Because of this we can leverage branches to ensure what changes are going into what release and be deliberate about those changes. 
 
