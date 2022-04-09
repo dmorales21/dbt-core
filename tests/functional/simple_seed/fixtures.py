@@ -103,7 +103,7 @@ macros__schema_test = """
 #
 
 models__downstream_from_seed_actual = """
-    select * from {{ ref('seed_actual') }}
+select * from {{ ref('seed_actual') }}
 
 """
 models__from_basic_seed = """
