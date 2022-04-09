@@ -268,7 +268,7 @@ class TestSimpleBigSeedBatched(SeedConfigBase):
         big_seed = project.test_data_dir / Path("big-seed.csv")
         with open(big_seed, "w") as f:
             writer = csv.writer(f)
-            writer.writerow(["id"])
+            writer.writerow(["seed_id"])
             for i in range(0, 20000):
                 writer.writerow([i])
 
