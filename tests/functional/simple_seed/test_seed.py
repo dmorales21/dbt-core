@@ -228,15 +228,14 @@ class TestSimpleSeedWithBOM(SeedConfigBase):
 
     @pytest.fixture(scope="class")
     def seeds(self, test_data_dir):
-        seed_bom = read_file(test_data_dir, "seed_bom.csv")
-        return {"seed_bom.csv": seed_bom}
-
-    def test_simple_seed(self, project):
-        # first make sure nobody "fixed" the file by accident
-        seed_path = project.test_data_dir / Path("seed_bom.csv")
+        seed_path = test_data_dir / Path("seed_bom.csv")
         with open(seed_path, encoding="utf-8") as fp:
             assert fp.read(1) == "\ufeff"
 
+        return {"seed_bom.csv": read_file(seed_path)}
+
+    def test_simple_seed(self, project):
+        # first make sure nobody "fixed" the file by accident
         results = run_dbt(["seed"])
         len(results) == 1
         check_relations_equal(project.adapter, ["seed_expected", "seed_bom"])
