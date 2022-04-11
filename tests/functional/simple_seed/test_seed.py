@@ -9,7 +9,6 @@ from dbt.tests.util import (
     check_relations_equal,
     check_table_does_exist,
     check_table_does_not_exist,
-    get_relation_columns,
 )
 from tests.functional.simple_seed.fixtures import (
     models__downstream_from_seed_actual,
@@ -230,21 +229,18 @@ class TestSimpleSeedWithBOM(SeedConfigBase):
 
     @pytest.fixture(scope="class")
     def seeds(self, test_data_dir):
-        # first make sure nobody "fixed" the file by accident
-        seed_path = test_data_dir / Path("seed_bom.csv")
-        with open(seed_path, encoding="utf-8") as fp:
-            assert fp.read(1) == "\ufeff"
-
-        return {"seed_bom.csv": read_file(seed_path)}
+        seed_bom = read_file(test_data_dir / Path("seed_bom.csv"))
+        return {"seed_bom.csv": seed_bom}
 
     def test_simple_seed(self, project):
         results = run_dbt(["seed"])
-        len(results) == 1
-        print(">>>> HERE")
+        assert len(results) == 1
 
-        print(get_relation_columns(project.adapter, "seed_bom"))
-        print(">>>> END HERE")
-        assert False
+        with open(
+            project.project_root / Path("seeds") / Path("seed_bom.csv"), encoding="utf-8"
+        ) as fp:
+            assert fp.read(1) == "\ufeff"
+
         check_relations_equal(project.adapter, ["seed_expected", "seed_bom"])
 
 
