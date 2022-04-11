@@ -236,9 +236,7 @@ class TestSimpleSeedWithBOM(SeedConfigBase):
         results = run_dbt(["seed"])
         assert len(results) == 1
 
-        with open(
-            project.project_root / Path("seeds") / Path("seed_bom.csv"), encoding="utf-8"
-        ) as fp:
+        with open(project.project_root / Path("seeds") / Path("seed_bom.csv")) as fp:
             assert fp.read(1) == "\ufeff"
 
         check_relations_equal(project.adapter, ["seed_expected", "seed_bom"])
