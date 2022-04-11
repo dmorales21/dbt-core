@@ -1,5 +1,6 @@
 import csv
 import pytest
+import shutil
 
 from pathlib import Path
 
@@ -227,12 +228,12 @@ class TestSimpleSeedWithBOM(SeedConfigBase):
         """Create table for ensuring seeds and models used in tests build correctly"""
         project.run_sql_file(project.test_data_dir / Path("seed_expected.sql"))
 
-    @pytest.fixture(scope="class")
-    def seeds(self, test_data_dir):
-        seed_bom = read_file(test_data_dir / Path("seed_bom.csv"))
-        return {"seed_bom.csv": seed_bom}
-
     def test_simple_seed(self, project):
+
+        shutil.copyfile(
+            project.test_data_dir / Path("seed_bom.csv"),
+            project.project_root / Path("seeds") / Path("seed_bom.csv"),
+        )
         results = run_dbt(["seed"])
         assert len(results) == 1
 
