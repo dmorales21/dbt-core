@@ -1,0 +1,64 @@
+# **what?**
+# When dependabot create a PR, it always adds the `dependency` label. This
+# action will add a corresponding changie yaml file to that PR when that label is added.
+# The file is created off a template:
+#
+# kind: Dependencies
+# body: <PR title>
+# time: <current timestamp>
+# custom:
+#   Author: dependabot
+#   Issue: 4904
+#   PR: <PR number>
+#
+# **why?**
+# Automate changelog generation for more visability
+
+# **when?**
+# Once a PR is created and it has been correctly labeled with `dependency`
+
+name: Dependency Changelog
+on:
+  pull_request:
+    types:
+      - labeled
+
+jobs:
+  build:
+    if: ${{ github.event.label.name == 'dependency' }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Dependabot Branch
+      uses: actions/checkout@v2
+      with:
+        # persist-credentials: false is crucial otherwise Git push is performed with
+        # github.token and not the token you configure using the env: GITHUB_TOKEN.
+        # See: https://github.com/gr2m/create-or-update-pull-request-action/issues/281
+        persist-credentials: false
+    # this just changes the order the changelog entries are listed in the final Changelog.md file
+    - name: Get Timestamp
+      id: time
+      uses: nanzm/get-time-action@v1.1
+      with:
+        format: 'YYYYMMDD-HHmmss'
+    - name: Generate Filepath
+      id: fp
+      run: |
+        export FILEPATH=".changes/unreleased/Dependencies-${{ steps.time.outputs.time }}.yaml"
+        echo "::set-env name=filepath::$FILEPATH"
+    - name: Create file
+      run: |
+        echo kind: Dependencies > filepath
+        echo body: ${{ github.event.pull_request.title }} >> $FILEPATH
+        echo time: "${{ steps.time.outputs.time }}" >> $FILEPATH
+        echo custom: >> $FILEPATH
+        echo   Author: dependabot >> $FILEPATH
+        echo   Issue: 4904 >> $FILEPATH
+        echo   PR: ${{ github.event.pull_request.number }} >> $FILEPATH
+    - name: Commit Changelog File
+      uses: gr2m/create-or-update-pull-request-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        commit-message: "Add automated changelog entry"
