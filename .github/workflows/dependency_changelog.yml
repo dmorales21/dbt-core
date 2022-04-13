@@ -59,7 +59,7 @@ jobs:
         filters: |
           changelog:
             - added: '.changes/unreleased/**.yaml'
-    - name: Checkout Dependabot Branch
+    - name: Checkout Branch
       if: steps.filter.outputs.changelog == 'false'
       uses: actions/checkout@v2
       with:
