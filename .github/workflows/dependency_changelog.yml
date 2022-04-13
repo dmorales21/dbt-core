@@ -98,5 +98,5 @@ jobs:
       with:
         branch: ${{ github.event.pull_request.head.ref }}
         # author expected in the format "Lorem J. Ipsum <lorem@example.com>"
-        # author: ${{ github.event.pull_request.user.name }} <${{ github.event.pull_request.user.email }}>
+        author: .
         commit-message: "Add automated changelog entry"
