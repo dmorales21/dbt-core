@@ -20,8 +20,8 @@
 name: Dependency Changelog
 on:
   pull_request:
-    # TODO: check when to do this
-    types: [opened, reopened, labeled, unlabeled, synchronize]
+    # TODO: if a label is applied before it's opened will `labeled` still trigger?
+    types: [opened, labeled]
 
 jobs:
   build:
@@ -29,7 +29,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # timestamp changes the order the changelog entries are listed in the final Changelog.md file
+    # timestamp changes the order the changelog entries are listed in the final Changelog.md file.
+    # The timestamp on the filename and the timestamp in the contents of the file have different expected formats.
     - name: Get File Name Timestamp
       id: filename_time
       uses: nanzm/get-time-action@v1.1
@@ -46,6 +47,7 @@ jobs:
         FILEPATH=.changes/unreleased/Dependencies-${{ steps.filename_time.outputs.time }}.yaml
         echo "::set-output name=FILEPATH::$FILEPATH"
     - name: Check if changelog file exists already
+        # if there's already a changelog entry, don't add another one!
         # https://github.com/marketplace/actions/paths-changes-filter
         # For each filter, it sets output variable named by the filter to the text:
         #  'true' - if any of changed files matches any of filter rules
@@ -67,7 +69,10 @@ jobs:
         # github.token and not the token you configure using the env: GITHUB_TOKEN.
         # See: https://github.com/gr2m/create-or-update-pull-request-action/issues/281
         persist-credentials: false
-    - name: Get name and email from last commit on PR
+    - name: Get name and email for commit
+      # The action to update the PR expects the author to be in the format of name <email>.
+      # Grab the name and email from the last commit to this PR and use it to commit the new
+      # changelog file
       if: steps.filter.outputs.changelog == 'false'
       id: user
       run: |
@@ -75,7 +80,7 @@ jobs:
         USEREMAIL="$(git log -n 1 --pretty=format:%ae)"
         echo "::set-output name=USERNAME::$USERNAME"
         echo "::set-output name=USEREMAIL::$USEREMAIL"
-    - name: Create file
+    - name: Create file from template
       if: steps.filter.outputs.changelog == 'false'
       run: |
         echo kind: Dependencies > "${{ steps.fp.outputs.FILEPATH }}"
