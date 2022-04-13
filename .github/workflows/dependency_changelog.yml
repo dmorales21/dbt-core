@@ -38,23 +38,28 @@ jobs:
         # See: https://github.com/gr2m/create-or-update-pull-request-action/issues/281
         persist-credentials: false
     # this just changes the order the changelog entries are listed in the final Changelog.md file
-    - name: Get Timestamp
-      id: time
+    - name: Get File Name Timestamp
+      id: filename_time
       uses: nanzm/get-time-action@v1.1
       with:
         format: 'YYYYMMDD-HHmmss'
+    - name: Get File Content Timestamp
+      id: file_content_time
+      uses: nanzm/get-time-action@v1.1
+      with:
+        format: 'YYYY-MM-DDTHH:mm:ss.000000-05:00'
     - name: Generate Filepath
       id: fp
       run: |
-        FILEPATH=.changes/unreleased/Dependencies-${{ steps.time.outputs.time }}.yaml
+        FILEPATH=.changes/unreleased/Dependencies-${{ steps.filename_time.outputs.time }}.yaml
         echo "::set-output name=FILEPATH::$FILEPATH"
     - name: Create file
       run: |
         echo kind: Dependencies > "${{ steps.fp.outputs.FILEPATH }}"
         echo body: ${{ github.event.pull_request.title }} >> "${{ steps.fp.outputs.FILEPATH }}"
-        echo time: "${{ steps.time.outputs.time }}" >> "${{ steps.fp.outputs.FILEPATH }}"
+        echo time: "${{ steps.file_content_time.outputs.time }}" >> "${{ steps.fp.outputs.FILEPATH }}"
         echo custom: >> "${{ steps.fp.outputs.FILEPATH }}"
-        echo "  Author: dependabot" >> "${{ steps.fp.outputs.FILEPATH }}"
+        echo "  Author: ${{ github.event.pull_request.user.login }}" >> "${{ steps.fp.outputs.FILEPATH }}"
         echo "  Issue: 4904" >> "${{ steps.fp.outputs.FILEPATH }}"
         echo "  PR: ${{ github.event.pull_request.number }}" >> "${{ steps.fp.outputs.FILEPATH }}"
     - name: Commit Changelog File
@@ -63,4 +68,5 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         branch: ${{ github.event.pull_request.head.ref }}
+        author: ${{ github.event.pull_request.user.login }}
         commit-message: "Add automated changelog entry"
