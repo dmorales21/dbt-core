@@ -1,5 +1,5 @@
 # **what?**
-# When dependabot create a PR, it always adds the `dependency` label. This
+# When dependabot create a PR, it always adds the `dependencies` label. This
 # action will add a corresponding changie yaml file to that PR when that label is added.
 # The file is created off a template:
 #
@@ -15,7 +15,7 @@
 # Automate changelog generation for more visability
 
 # **when?**
-# Once a PR is created and it has been correctly labeled with `dependency`
+# Once a PR is created and it has been correctly labeled with `dependencies`
 
 name: Dependency Changelog
 on:
@@ -25,7 +25,7 @@ on:
 
 jobs:
   build:
-    if: ${{ github.event.label.name == 'dependency' }}
+    if: ${{ github.event.label.name == 'dependencies' }}
     runs-on: ubuntu-latest
 
     steps:
