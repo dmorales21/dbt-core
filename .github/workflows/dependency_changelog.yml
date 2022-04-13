@@ -75,6 +75,9 @@ jobs:
         echo time: "${{ steps.file_content_time.outputs.time }}" >> "${{ steps.fp.outputs.FILEPATH }}"
         echo custom: >> "${{ steps.fp.outputs.FILEPATH }}"
         echo "  Author: ${{ github.event.pull_request.user }}" >> "${{ steps.fp.outputs.FILEPATH }}"
+        echo "  Author: ${{ github.event.pull_request.user.name }}" >> "${{ steps.fp.outputs.FILEPATH }}"
+        echo "  Author: ${{ github.event.pull_request.user.email }}" >> "${{ steps.fp.outputs.FILEPATH }}"
+        echo "  Author: ${{ github.event.pull_request.user.logon }}" >> "${{ steps.fp.outputs.FILEPATH }}"
         echo "  Author: ${{ github.event.pull_request.name }}" >> "${{ steps.fp.outputs.FILEPATH }}"
         echo "  Author: ${{ github.event.pull_request.email }}" >> "${{ steps.fp.outputs.FILEPATH }}"
         echo "  Author: ${{ github.event.pull_request.actor }}" >> "${{ steps.fp.outputs.FILEPATH }}"
@@ -91,5 +94,5 @@ jobs:
       with:
         branch: ${{ github.event.pull_request.head.ref }}
         # author expected in the format "Lorem J. Ipsum <lorem@example.com>"
-        author: ${{ github.event.pull_request.user.name }} <${{ github.event.pull_request.user.email }}>
+        # author: ${{ github.event.pull_request.user.name }} <${{ github.event.pull_request.user.email }}>
         commit-message: "Add automated changelog entry"
