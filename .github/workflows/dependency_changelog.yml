@@ -78,8 +78,9 @@ jobs:
         echo "  Author: ${{ github.event.pull_request.name }}" >> "${{ steps.fp.outputs.FILEPATH }}"
         echo "  Author: ${{ github.event.pull_request.email }}" >> "${{ steps.fp.outputs.FILEPATH }}"
         echo "  Author: ${{ github.event.pull_request.actor }}" >> "${{ steps.fp.outputs.FILEPATH }}"
-        echo "  Author: ${{ github.event.head_commit.author.name }} >> "${{ steps.fp.outputs.FILEPATH }}"
-        echo "  Author: ${{ github.event.head_commit.author.email }} >> "${{ steps.fp.outputs.FILEPATH }}"
+        echo "  Author: ${{ github.event.head_commit.author.name }}" >> "${{ steps.fp.outputs.FILEPATH }}"
+        echo "  Author: ${{ github.event.head_commit.author.email }}" >> "${{ steps.fp.outputs.FILEPATH }}"
+        echo "  Author: ${{ github.event.client_payload.actor }}" >> "${{ steps.fp.outputs.FILEPATH }}"
         echo "  Issue: 4904" >> "${{ steps.fp.outputs.FILEPATH }}"
         echo "  PR: ${{ github.event.pull_request.number }}" >> "${{ steps.fp.outputs.FILEPATH }}"
     - name: Commit Changelog File
