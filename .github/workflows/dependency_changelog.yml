@@ -45,7 +45,7 @@ jobs:
     - name: Generate Filepath
       id: fp
       run: |
-        FILEPATH=".changes/unreleased/Dependencies-${{ steps.time.outputs.time }}.yaml"
+        FILEPATH=".changes/unreleased/Dependencies-'${{ steps.time.outputs.time }}''.yaml"
         echo "::set-output name=FILEPATH::$FILEPATH
     - name: Create file
       run: |
