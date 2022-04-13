@@ -3,6 +3,7 @@ import shutil
 import yaml
 import json
 import warnings
+from datetime import datetime
 from typing import List
 from contextlib import contextmanager
 
@@ -104,9 +105,9 @@ def copy_file(src_path, src, dest_path, dest) -> None:
 
 
 # Used in tests when you want to remove a file from the project directory
-def rm_file(src_path, src) -> None:
+def rm_file(*paths) -> None:
     # remove files from proj_path
-    os.remove(os.path.join(src_path, src))
+    os.remove(os.path.join(*paths))
 
 
 # Used in tests to write out the string contents of a file to a
@@ -165,6 +166,16 @@ def check_result_nodes_by_unique_id(results, unique_ids):
     for result in results:
         result_unique_ids.append(result.node.unique_id)
     assert set(unique_ids) == set(result_unique_ids)
+
+
+# Check datetime is between start and end/now
+def check_datetime_between(timestr, start, end=None):
+    datefmt = "%Y-%m-%dT%H:%M:%S.%fZ"
+    if end is None:
+        end = datetime.utcnow()
+    parsed = datetime.strptime(timestr, datefmt)
+    assert start <= parsed
+    assert end >= parsed
 
 
 class TestProcessingException(Exception):
