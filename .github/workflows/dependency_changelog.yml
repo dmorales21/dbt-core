@@ -20,8 +20,7 @@
 name: Dependency Changelog
 on:
   pull_request:
-    types:
-      - labeled
+    types: [labeled]
 
 jobs:
   build:
@@ -29,6 +28,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # TODO: add check that files does not already exist
     - name: Checkout Dependabot Branch
       uses: actions/checkout@v2
       with:
@@ -45,17 +45,17 @@ jobs:
     - name: Generate Filepath
       id: fp
       run: |
-        export FILEPATH=".changes/unreleased/Dependencies-${{ steps.time.outputs.time }}.yaml"
-        echo "::set-env name=filepath::$FILEPATH"
+        FILEPATH=".changes/unreleased/Dependencies-${{ steps.time.outputs.time }}.yaml"
+        echo "::set-output name=FILEPATH::$FILEPATH
     - name: Create file
       run: |
-        echo kind: Dependencies > filepath
-        echo body: ${{ github.event.pull_request.title }} >> $FILEPATH
-        echo time: "${{ steps.time.outputs.time }}" >> $FILEPATH
-        echo custom: >> $FILEPATH
-        echo   Author: dependabot >> $FILEPATH
-        echo   Issue: 4904 >> $FILEPATH
-        echo   PR: ${{ github.event.pull_request.number }} >> $FILEPATH
+        echo kind: Dependencies > "${{ steps.fp.outputs.FILEPATH }}"
+        echo body: ${{ github.event.pull_request.title }} >> "${{ steps.fp.outputs.FILEPATH }}"
+        echo time: "${{ steps.time.outputs.time }}" >> "${{ steps.fp.outputs.FILEPATH }}"
+        echo custom: >> "${{ steps.fp.outputs.FILEPATH }}"
+        echo   Author: dependabot >> "${{ steps.fp.outputs.FILEPATH }}"
+        echo   Issue: 4904 >> "${{ steps.fp.outputs.FILEPATH }}"
+        echo   PR: ${{ github.event.pull_request.number }} >> "${{ steps.fp.outputs.FILEPATH }}"
     - name: Commit Changelog File
       uses: gr2m/create-or-update-pull-request-action@v1
       env:
