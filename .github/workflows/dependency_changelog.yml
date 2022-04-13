@@ -67,6 +67,14 @@ jobs:
         # github.token and not the token you configure using the env: GITHUB_TOKEN.
         # See: https://github.com/gr2m/create-or-update-pull-request-action/issues/281
         persist-credentials: false
+    - name: Get name and email from last commit on PR
+      if: steps.filter.outputs.changelog == 'false'
+      id: user
+      run: |
+        USERNAME="$(git log -n 1 --pretty=format:%an)"
+        USEREMAIL="$(git log -n 1 --pretty=format:%ae)"
+        echo "::set-output name=USERNAME::$USERNAME"
+        echo "::set-output name=USEREMAIL::$USEREMAIL"
     - name: Create file
       if: steps.filter.outputs.changelog == 'false'
       run: |
@@ -74,21 +82,8 @@ jobs:
         echo body: ${{ github.event.pull_request.title }} >> "${{ steps.fp.outputs.FILEPATH }}"
         echo time: "${{ steps.file_content_time.outputs.time }}" >> "${{ steps.fp.outputs.FILEPATH }}"
         echo custom: >> "${{ steps.fp.outputs.FILEPATH }}"
-        echo "  Author: ${{ github.event.pull_request.commits }}" >> "${{ steps.fp.outputs.FILEPATH }}"
-        echo "  Author: ${{ github.event.pull_request.commit.author.name }}" >> "${{ steps.fp.outputs.FILEPATH }}"
-        echo "  Author: ${{ github.event.pull_request.commits.commit.author.name }}" >> "${{ steps.fp.outputs.FILEPATH }}"
-        echo "  Author: ${{ github.event.pull_request.owner }}" >> "${{ steps.fp.outputs.FILEPATH }}"
-        # echo "  Author: ${{ github.event.pull_request.user }}" >> "${{ steps.fp.outputs.FILEPATH }}"
-        # echo "  Author: ${{ github.event.pull_request.user.name }}" >> "${{ steps.fp.outputs.FILEPATH }}"
-        # echo "  Author: ${{ github.event.pull_request.user.email }}" >> "${{ steps.fp.outputs.FILEPATH }}"
-        # echo "  Author: ${{ github.event.pull_request.user.login }}" >> "${{ steps.fp.outputs.FILEPATH }}"
-        # echo "  Author: ${{ github.event.pull_request.name }}" >> "${{ steps.fp.outputs.FILEPATH }}"
-        # echo "  Author: ${{ github.event.pull_request.email }}" >> "${{ steps.fp.outputs.FILEPATH }}"
-        # echo "  Author: ${{ github.event.pull_request.actor }}" >> "${{ steps.fp.outputs.FILEPATH }}"
-        # echo "  Author: ${{ github.event.head_commit.author.name }}" >> "${{ steps.fp.outputs.FILEPATH }}"
-        # echo "  Author: ${{ github.event.head_commit.author.email }}" >> "${{ steps.fp.outputs.FILEPATH }}"
-        # echo "  Author: ${{ github.event.client_payload.actor }}" >> "${{ steps.fp.outputs.FILEPATH }}"
-        echo "  Issue: 4904" >> "${{ steps.fp.outputs.FILEPATH }}"  # github.event.pull_request.issue for auto id
+        echo "  Author: ${{ github.event.pull_request.user.login }}"" >> "${{ steps.fp.outputs.FILEPATH }}"
+        echo "  Issue: 4904" >> "${{ steps.fp.outputs.FILEPATH }}"  # github.event.pull_request.issue for auto id?
         echo "  PR: ${{ github.event.pull_request.number }}" >> "${{ steps.fp.outputs.FILEPATH }}"
     - name: Commit Changelog File
       if: steps.filter.outputs.changelog == 'false'
@@ -98,5 +93,5 @@ jobs:
       with:
         branch: ${{ github.event.pull_request.head.ref }}
         # author expected in the format "Lorem J. Ipsum <lorem@example.com>"
-        author: .
+        author: "${{ steps.user.outputs.USERNAME }} <${{ steps.user.outputs.USEREMAIL }}>"
         commit-message: "Add automated changelog entry"
