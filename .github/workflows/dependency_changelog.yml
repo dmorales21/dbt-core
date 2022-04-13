@@ -68,5 +68,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         branch: ${{ github.event.pull_request.head.ref }}
-        author: ${{ github.event.pull_request.user.name }} <${{ github.event.pull_request.user.email }}>
+        # author expected in the format "Lorem J. Ipsum <lorem@example.com>"
+        author: "${{ github.event.pusher.name }} <${{ github.event.pusher.email }}>"
         commit-message: "Add automated changelog entry"
