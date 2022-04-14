@@ -1,1 +1,0 @@
-{{ salesforce_formula_utils.sfdc_formula_view('PROPERTIES_C') }}

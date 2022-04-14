@@ -1,1 +1,0 @@
-# Contexts and Jinja rendering
